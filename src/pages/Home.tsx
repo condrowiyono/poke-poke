@@ -4,7 +4,10 @@ const Home = () => {
   return (
     <div>
       <h1>Home</h1>
-      <Link to="/about">About</Link>
+      <div style={{ display: "flex", gap: 12 }}>
+        <Link to="/about">About</Link>
+        <Link to="/pokemon">Pokemon</Link>
+      </div>
     </div>
   );
 };

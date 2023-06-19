@@ -1,15 +1,18 @@
-import React, { useState, useEffect, Children, ReactElement } from "react";
+import React, { useState, useEffect, ReactElement, Children } from "react";
 import { ElementProps } from "../components/Route";
 
-type ContextType = [string, React.Dispatch<React.SetStateAction<string>>];
-const Context = React.createContext<ContextType>(["", () => {}]);
+type ContextType = [URL, React.Dispatch<React.SetStateAction<URL>>];
+const Context = React.createContext<ContextType>([
+  new URL(window.location.href),
+  () => {},
+]);
 
 type RouterProviderProps = {
   children: ReactElement<ElementProps>[];
 };
 
 const RouterProvider = ({ children }: RouterProviderProps) => {
-  const [route, setRoute] = useState(window.location.pathname);
+  const [route, setRoute] = useState(new URL(window.location.href));
 
   const routes = Children.map(children, (child) => {
     return {
@@ -19,13 +22,15 @@ const RouterProvider = ({ children }: RouterProviderProps) => {
   });
 
   useEffect(() => {
-    const handlePopState = () => setRoute(window.location.pathname);
+    const handlePopState = () => {
+      setRoute(new URL(window.location.pathname, window.location.href));
+    };
 
     window.addEventListener("popstate", handlePopState);
     return () => window.removeEventListener("popstate", handlePopState);
   }, []);
 
-  const routeMatch = routes.find((r) => route === r.path);
+  const routeMatch = routes.find((r) => route.pathname === r.path);
   const element = routeMatch ? routeMatch.element : <div>Not Found</div>;
 
   return (

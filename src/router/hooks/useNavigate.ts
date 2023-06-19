@@ -4,9 +4,12 @@ import { Context } from "../context";
 const useNavigate = () => {
   const [, setRoute] = useContext(Context);
 
-  const navigate = (to: string) => {
-    setRoute(to);
-    window.history.pushState({}, "", to);
+  const navigate = (to: string | URL) => {
+    const url =
+      typeof to === "string" ? new URL(to, window.location.origin) : to;
+
+    setRoute(url);
+    window.history.pushState({}, "", url);
   };
 
   return navigate;

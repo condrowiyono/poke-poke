@@ -6,6 +6,7 @@ import Route from "./components/Route";
 import useLocation from "./hooks/useLocation";
 import useHistory from "./hooks/useHistory";
 import useNavigate from "./hooks/useNavigate";
+import useUrlState from "./hooks/useUrlState";
 
 export {
   RouterProvider,
@@ -15,4 +16,5 @@ export {
   useLocation,
   useHistory,
   useNavigate,
+  useUrlState,
 };
