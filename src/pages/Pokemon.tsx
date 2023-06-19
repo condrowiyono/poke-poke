@@ -1,5 +1,5 @@
 import { FormEvent, useRef } from "react";
-import { Link, useHistory, useNavigate, useUrlState } from "../router";
+import { Link, useHistory, useUrlState } from "../router";
 
 enum PokemonType {
   Undefined = "",
@@ -15,14 +15,12 @@ type PokemonParams = {
 };
 
 const Pokemon = () => {
+  const formRef = useRef<HTMLFormElement>(null);
+  const history = useHistory();
   const [params, setParams] = useUrlState<PokemonParams>({
     name: "",
     type: PokemonType.Undefined,
   });
-
-  const formRef = useRef<HTMLFormElement>(null);
-
-  const history = useHistory();
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();

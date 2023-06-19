@@ -8,11 +8,15 @@ import React, {
 import { ElementProps } from "../components/Route";
 import flatten from "../utils/flatten";
 
-type ContextType = [URL, React.Dispatch<React.SetStateAction<URL>>];
-const Context = React.createContext<ContextType>([
-  new URL(window.location.href),
-  () => {},
-]);
+type ContextType = {
+  state: [URL, React.Dispatch<React.SetStateAction<URL>>];
+  matchedPath: string;
+};
+
+const Context = React.createContext<ContextType>({
+  state: [new URL(window.location.href), () => {}],
+  matchedPath: "",
+});
 
 type RouterProviderProps = {
   router?: ElementProps[];
@@ -45,6 +49,8 @@ const RouterProvider = ({ router, children }: RouterProviderProps) => {
     return flatten(routeComponent);
   }, [router, children]);
 
+  console.log(routes);
+
   const routeMatch = routes.find((r) => {
     const pathSegments = r.path.split("/"); // Split the path into segments
     const routeSegments = route.pathname.split("/");
@@ -61,7 +67,14 @@ const RouterProvider = ({ router, children }: RouterProviderProps) => {
   const element = routeMatch ? routeMatch.element : <div>Not Found</div>;
 
   return (
-    <Context.Provider value={[route, setRoute]}>{element}</Context.Provider>
+    <Context.Provider
+      value={{
+        state: [route, setRoute],
+        matchedPath: routeMatch ? routeMatch.path : "",
+      }}
+    >
+      {element}
+    </Context.Provider>
   );
 };
 

@@ -2,6 +2,7 @@
   --bg : #d3d3d3;
 
   color-scheme: light dark;
+  scroll-behavior: smooth;
   font-family: system-ui, -apple-system, sans-serif;
 }
 

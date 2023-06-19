@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { Context } from "../context";
 
 const useNavigate = () => {
-  const [, setRoute] = useContext(Context);
+  const [, setRoute] = useContext(Context).state;
 
   const navigate = (to: string | URL) => {
     const url =

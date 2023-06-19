@@ -8,12 +8,13 @@ type LinkType = {
 
 const Link = ({ to, children }: LinkType) => {
   const href = typeof to === "string" ? to : to.href;
-  const [, setRoute] = useContext(Context);
+  const [, setRoute] = useContext(Context).state;
 
   const handleClick = (e: MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
 
-    const url = new URL(e.currentTarget.href);
+    // handle hash
+    const url = new URL(href, window.location.href);
 
     setRoute(url);
     window.history.pushState({}, "", url);

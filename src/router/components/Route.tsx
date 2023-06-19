@@ -2,7 +2,7 @@ import { ReactNode } from "react";
 
 export type ElementProps = {
   path: string;
-  element: ReactNode;
+  element?: ReactNode;
   children?: ElementProps[];
 };
 

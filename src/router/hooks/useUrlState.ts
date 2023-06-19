@@ -3,7 +3,6 @@ import queryString, { ParseOptions, StringifyOptions } from "query-string";
 import { useLocation, useNavigate } from "..";
 
 export interface Options {
-  navigateMode?: "push" | "replace";
   parseOptions?: ParseOptions;
   stringifyOptions?: StringifyOptions;
 }
@@ -21,11 +20,7 @@ const baseStringifyConfig: StringifyOptions = {
 const useUrlState = <T>(initialState?: T | (() => T), options?: Options) => {
   type State = Partial<{ [K in keyof T]: unknown }>;
 
-  const {
-    navigateMode = "push",
-    parseOptions,
-    stringifyOptions,
-  } = options || {};
+  const { parseOptions, stringifyOptions } = options || {};
 
   const mergedParseOptions = { ...baseParseConfig, ...parseOptions };
   const mergedStringifyOptions = {
