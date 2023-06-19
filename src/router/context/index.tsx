@@ -1,5 +1,12 @@
-import React, { useState, useEffect, ReactElement, Children } from "react";
+import React, {
+  useState,
+  useEffect,
+  ReactElement,
+  Children,
+  useMemo,
+} from "react";
 import { ElementProps } from "../components/Route";
+import flatten from "../utils/flatten";
 
 type ContextType = [URL, React.Dispatch<React.SetStateAction<URL>>];
 const Context = React.createContext<ContextType>([
@@ -17,16 +24,6 @@ type RouterProviderProps = {
 
 const RouterProvider = ({ router, children }: RouterProviderProps) => {
   const [route, setRoute] = useState(new URL(window.location.href));
-
-  const routes = router
-    ? router
-    : Children.map(children, (child) => {
-        return {
-          path: child.props.path,
-          element: child.props.element,
-        };
-      });
-
   useEffect(() => {
     const handlePopState = () => {
       setRoute(new URL(window.location.pathname, window.location.href));
@@ -36,7 +33,31 @@ const RouterProvider = ({ router, children }: RouterProviderProps) => {
     return () => window.removeEventListener("popstate", handlePopState);
   }, []);
 
-  const routeMatch = routes.find((r) => route.pathname === r.path);
+  const routes = useMemo(() => {
+    const routeComponent = router
+      ? router
+      : Children.map(children, ({ props }) => ({
+          path: props.path,
+          element: props.element,
+          children: props.children,
+        }));
+
+    return flatten(routeComponent);
+  }, [router, children]);
+
+  const routeMatch = routes.find((r) => {
+    const pathSegments = r.path.split("/"); // Split the path into segments
+    const routeSegments = route.pathname.split("/");
+
+    return (
+      pathSegments.length === routeSegments.length &&
+      pathSegments.every(
+        (segment, index) =>
+          segment === routeSegments[index] || segment.startsWith(":")
+      )
+    );
+  });
+
   const element = routeMatch ? routeMatch.element : <div>Not Found</div>;
 
   return (
