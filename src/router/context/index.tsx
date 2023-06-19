@@ -8,18 +8,24 @@ const Context = React.createContext<ContextType>([
 ]);
 
 type RouterProviderProps = {
-  children: ReactElement<ElementProps>[];
+  router?: ElementProps[];
+  /**
+   * Will be used only if router is not provided
+   */
+  children?: ReactElement<ElementProps>[];
 };
 
-const RouterProvider = ({ children }: RouterProviderProps) => {
+const RouterProvider = ({ router, children }: RouterProviderProps) => {
   const [route, setRoute] = useState(new URL(window.location.href));
 
-  const routes = Children.map(children, (child) => {
-    return {
-      path: child.props.path,
-      element: child.props.element,
-    };
-  });
+  const routes = router
+    ? router
+    : Children.map(children, (child) => {
+        return {
+          path: child.props.path,
+          element: child.props.element,
+        };
+      });
 
   useEffect(() => {
     const handlePopState = () => {
