@@ -49,8 +49,6 @@ const RouterProvider = ({ router, children }: RouterProviderProps) => {
     return flatten(routeComponent);
   }, [router, children]);
 
-  console.log(routes);
-
   const routeMatch = routes.find((r) => {
     const pathSegments = r.path.split("/"); // Split the path into segments
     const routeSegments = route.pathname.split("/");

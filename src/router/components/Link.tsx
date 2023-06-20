@@ -13,9 +13,7 @@ const Link = ({ to, children }: LinkType) => {
   const handleClick = (e: MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
 
-    // handle hash
     const url = new URL(href, window.location.href);
-
     setRoute(url);
     window.history.pushState({}, "", url);
   };

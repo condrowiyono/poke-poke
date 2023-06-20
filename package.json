@@ -10,6 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@apollo/client": "^3.7.15",
+    "graphql": "^16.6.0",
     "query-string": "^8.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
@@ -23,6 +25,7 @@
     "eslint": "^8.42.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.1",
+    "sass": "^1.63.4",
     "typescript": "^5.0.2",
     "vite": "^4.3.9"
   }
